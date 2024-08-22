@@ -169,7 +169,7 @@ async function main() {
 
   // 删除一条
 //   try {
-//     const data = await BookModel.deleteOne({ _id: "66c7114cb80f98ec4776ced5" });
+//     const data = await BookModel.deleteOne({ _id: "66c7153bb158509168ec9ffb" });
 //     console.log(data);
 //   } catch (error) {
 //     console.log("删除出错……");
