@@ -1,0 +1,28 @@
+{
+  "account": [
+    {
+      "id": "UtZ-d1GPQ",
+      "title": "基金收入",
+      "time": "2024-08-19",
+      "type": "1",
+      "account": "630",
+      "remark": "基金"
+    },
+    {
+      "id": "gfbfR3zCz",
+      "title": "买书",
+      "time": "2024-08-19",
+      "type": "-1",
+      "account": "200",
+      "remark": "读书"
+    },
+    {
+      "id": "3-YLju5f4",
+      "title": "请女朋友吃饭",
+      "time": "2023-02-08",
+      "type": "-1",
+      "account": "214",
+      "remarks": "情人节聚餐"
+    }
+  ]
+}
