@@ -26,7 +26,13 @@
     <div class="container">
         <div class="row">
             <div class="col-xs-12 col-lg-8 col-lg-offset-2">
-                <h2>记账本</h2>
+                <div class="row">
+                    <h2 class="col-xs-6">记账本</h2>
+                    <h2 class="col-xs-6 text-right">
+                        <a href="/accountList/creatAccount" class="btn btn-primary">添加账单</a>
+                    </h2>
+                </div>
+                
                 <hr />
                 <div class="accounts">
 
@@ -43,7 +49,7 @@
                                 </div>
                                 <div class="col-xs-2 text-right"><%= item.account %> 元</div>
                                 <div class="col-xs-2 text-right">
-                                    <a href="/accountList/<%= item.id %>">
+                                    <a class="delBtn" href="/accountList/<%= item.id %>">
                                         <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                                     </a>
                                     
@@ -58,5 +64,23 @@
         </div>
     </div>
 </body>
+
+<!-- 删除弹窗 -->
+ <script>
+    // 获取所有delBtn
+    let delBtns = document.querySelectorAll('.delBtn')
+
+    // 绑定事件
+    delBtns.forEach(item => {
+        item.addEventListener('click', function(e) {
+            if (confirm('你确定要删除吗？')) {
+                return true
+            } else {
+                // 阻止默认行为
+                e.preventDefault()
+            }
+        })
+    })
+ </script>
 
 </html>

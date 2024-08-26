@@ -27,8 +27,20 @@ async function addAcount(account) {
      }
 }
 
+// 删除数据
+async function deleteAcount(id) {
+     try {
+       const data = await accountModel.deleteOne({ _id: id });
+       console.log("删除成功", data);
+       
+     } catch (error) {
+       console.log("删除失败……", error);
+     }
+}
+
 // 导出相关api
 module.exports = {
   findAllaccounts,
   addAcount,
+  deleteAcount,
 };

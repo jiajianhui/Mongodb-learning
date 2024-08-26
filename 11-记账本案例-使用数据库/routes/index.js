@@ -1,24 +1,16 @@
 var express = require('express');
 var router = express.Router();
 
-// 导入lowdb
-const low = require("lowdb");
-const FileSync = require("lowdb/adapters/FileSync");
-
-const adapter = new FileSync(__dirname + "/../data/db.json");
-
-// 获取db对象
-const db = low(adapter);
-
-// 导入shortid
-const shortid = require("shortid");
-
 // 导入moment
 const moment = require('moment')
 // console.log(moment("2022-03-01").toDate());
 
 // 导入数据库相关方法 
-const { findAllaccounts,addAcount } = require("../accountServer");
+const {
+  findAllaccounts,
+  addAcount,
+  deleteAcount,
+} = require("../accountServer");
 
 // 账单列表
 router.get('/accountList', async function(req, res, next) {
@@ -66,13 +58,18 @@ router.post("/accountList", async function (req, res, next) {
 });
 
 // 删除账单
-router.get("/accountList/:id", function (req, res, next) {
-  // 获取id
-  let id = req.params.id;
-  // 删除数据
-  db.get("account").remove({ id: id }).write();
-  // 动态设置信息
-  res.render("success", { msg: "删除成功", url: "/accountList" });
+router.get("/accountList/:id", async function (req, res, next) {
+  try {
+    // 获取id
+    let id = req.params.id;
+    // 删除数据
+    await deleteAcount(id)
+    // 动态设置信息
+    res.render("success", { msg: "删除成功", url: "/accountList" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("服务器错误，请重试！！！");
+  }
 });
 
 module.exports = router;
