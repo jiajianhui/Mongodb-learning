@@ -32,13 +32,13 @@
 
                     <!-- 遍历数据 -->
                     <% accounts.forEach( item => { %>
-                        <div class="panel <%= item.type === '-1' ? 'panel-danger' : 'panel-success' %> ">
-                            <div class="panel-heading"><%= item.time %></div>
+                        <div class="panel <%= item.type === -1 ? 'panel-danger' : 'panel-success' %> ">
+                            <div class="panel-heading"><%= moment(item.time).format('YYYY-MM-DD') %></div>
                             <div class="panel-body">
                                 <div class="col-xs-6"><%= item.title %></div>
                                 <div class="col-xs-2 text-center">
-                                    <span class="label <%= item.type === '-1' ? 'label-warning' : 'label-success' %>">
-                                        <%= item.type==='-1' ? '支出' : '收入' %>
+                                    <span class="label <%= item.type === -1 ? 'label-warning' : 'label-success' %>">
+                                        <%= item.type===-1 ? '支出' : '收入' %>
                                     </span>
                                 </div>
                                 <div class="col-xs-2 text-right"><%= item.account %> 元</div>
