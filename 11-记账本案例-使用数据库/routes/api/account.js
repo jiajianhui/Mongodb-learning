@@ -10,6 +10,8 @@ const {
   findAllaccounts,
   addAcount,
   deleteAcount,
+  findOneaccount,
+  updateAccount,
 } = require("../../accountServer");
 
 // 账单列表
@@ -35,13 +37,6 @@ router.get("/accountList", async function (req, res, next) {
   }
 });
 
-// 添加账单
-router.get("/accountList/creatAccount", function (req, res, next) {
-  res.render("creat");
-});
-
-// ————————————————————————————————————
-// API接口
 
 // 新增账单
 router.post("/accountList", async function (req, res, next) {
@@ -54,26 +49,86 @@ router.post("/accountList", async function (req, res, next) {
     };
     // 插入数据库
     await addAcount(newAccount);
-    // 动态设置信息
-    res.render("success", { msg: "添加成功", url: "/accountList" });
+    // 响应成功
+    res.json({
+      code: "0000",
+      msg: "添加成功",
+      data: newAccount,
+    });
   } catch (error) {
-    console.log(error);
-    res.status(500).send("服务器错误，请重试！！！");
+    res.json({
+      code: "1002",
+      msg: "创建失败",
+      data: null,
+    });
   }
 });
 
 // 删除账单
-router.get("/accountList/:id", async function (req, res, next) {
+router.delete("/accountList/:id", async function (req, res, next) {
   try {
     // 获取id
     let id = req.params.id;
     // 删除数据
-    await deleteAcount(id);
-    // 动态设置信息
-    res.render("success", { msg: "删除成功", url: "/accountList" });
+    const data = await deleteAcount(id);
+    // 响应成功
+    res.json({
+      code: "0000",
+      msg: "删除成功",
+      data: data
+    });
   } catch (error) {
-    console.log(error);
-    res.status(500).send("服务器错误，请重试！！！");
+    res.json({
+      code: "1003",
+      msg: "删除失败",
+      data: null
+    });
+  }
+});
+
+// 获取单条账单
+router.get("/accountList/:id", async function (req, res, next) {
+  try {
+    // 获取id
+    let id = req.params.id;
+    // 获取数据
+    const data = await findOneaccount(id)
+    // 响应成功
+    res.json({
+      code: "0000",
+      msg: "获取成功",
+      data: data,
+    });
+  } catch (error) {
+    res.json({
+      code: "1004",
+      msg: "获取失败",
+      data: null,
+    });
+  }
+});
+
+// 更新单条账单
+router.patch("/accountList/:id", async function (req, res, next) {
+  try {
+    // 获取id
+    let id = req.params.id;
+    let newData = req.body
+    await updateAccount(id, newData);
+    // 获取数据
+    const data = await findOneaccount(id)
+    // 响应成功
+    res.json({
+      code: "0000",
+      msg: "更新成功",
+      data: data,
+    });
+  } catch (error) {
+    res.json({
+      code: "1005",
+      msg: "更新失败",
+      data: null,
+    });
   }
 });
 
