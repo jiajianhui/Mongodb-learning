@@ -11,7 +11,7 @@ async function findAllaccounts() {
        
      } catch (error) {
        console.log("读取失败……", error);
-       return [] //确保返回数据，不然会报错
+       throw error; //确保抛出异常，供外部捕获
      }
 }
 

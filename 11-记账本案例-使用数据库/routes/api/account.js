@@ -1,30 +1,38 @@
-var express = require('express');
+var express = require("express");
 var router = express.Router();
 
 // 导入moment
-const moment = require('moment')
+const moment = require("moment");
 // console.log(moment("2022-03-01").toDate());
 
-// 导入数据库相关方法 
+// 导入数据库相关方法
 const {
   findAllaccounts,
   addAcount,
   deleteAcount,
-} = require("../accountServer");
+} = require("../../accountServer");
 
 // 账单列表
-router.get('/accountList', async function(req, res, next) {
-
+router.get("/accountList", async function (req, res, next) {
   try {
     const accounts = await findAllaccounts();
-    // console.log(accounts);
-    res.render("list", { accounts: accounts || [], moment: moment });  //将moment对象传过去，将时间格式化
-
+    
+    // 响应成功
+    res.json({
+        //响应编号
+        code: '0000',
+        //响应信息
+        msg: '读取成功',
+        //响应数据
+        data: accounts
+    })
   } catch (error) {
-    console.log(error);
-    res.status(500).send('服务器错误，请重试！！！')
+    res.json({
+        code: '1001',
+        msg: '读取失败',
+        data: null
+    })
   }
-  
 });
 
 // 添加账单
@@ -32,9 +40,8 @@ router.get("/accountList/creatAccount", function (req, res, next) {
   res.render("creat");
 });
 
-
-// ---------------------------------------------------------
-
+// ————————————————————————————————————
+// API接口
 
 // 新增账单
 router.post("/accountList", async function (req, res, next) {
@@ -49,12 +56,10 @@ router.post("/accountList", async function (req, res, next) {
     await addAcount(newAccount);
     // 动态设置信息
     res.render("success", { msg: "添加成功", url: "/accountList" });
-
   } catch (error) {
     console.log(error);
     res.status(500).send("服务器错误，请重试！！！");
   }
-
 });
 
 // 删除账单
@@ -63,7 +68,7 @@ router.get("/accountList/:id", async function (req, res, next) {
     // 获取id
     let id = req.params.id;
     // 删除数据
-    await deleteAcount(id)
+    await deleteAcount(id);
     // 动态设置信息
     res.render("success", { msg: "删除成功", url: "/accountList" });
   } catch (error) {
