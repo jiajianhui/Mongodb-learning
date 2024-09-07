@@ -7,16 +7,16 @@ const userModel = require('../../userModel')
 // 导入md5
 const md5 = require('md5')
 
-// 响应注册页面
+// 注册页面
 router.get('/reg', (req, res) => {
     res.render('auth/reg')
 })
 
-// 注册用户
-router.post("/reg", (req, res) => {
+// 注册操作
+router.post("/reg", async (req, res) => {
     try {
         const newUser = new userModel({ ...req.body, password: md5(req.body.password) });  //使用md5进行加密
-        newUser.save();
+        await newUser.save();
         console.log("数据添加成功", newUser);
         res.render("success", { msg: "注册成功", url: "/login" });
 
@@ -26,5 +26,33 @@ router.post("/reg", (req, res) => {
         console.log("添加失败……", error);
      }
 });
+
+// 登录页面
+router.get('/login', (req, res) => {
+    res.render('auth/login')
+})
+
+// 登录操作
+router.post("/login", async (req, res) => {
+    // 1、获取响应体
+    const {username, password} = req.body
+    // 2、查询数据库
+    try {
+        //findOne 是异步操作，因此需要使用 await 等待查询结果；否则会始终显示登录成功
+        const data = await userModel.findOne({username: username, password: md5(password)})
+        console.log(data);
+        // 3、判断
+        if (data) {
+            res.render('success', {msg: '登录成功', url : '/accountList'})
+        } else {
+            res.send('账号密码错误～')
+        }
+
+     } catch (error) {
+        res.status(500).send('登录失败，稍后重试……')
+     }
+});
+
+
 
 module.exports = router;
