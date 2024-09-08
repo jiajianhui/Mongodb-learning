@@ -1,6 +1,3 @@
-var express = require('express');
-var router = express.Router();
-
 // 导入moment
 const moment = require('moment')
 // console.log(moment("2022-03-01").toDate());
@@ -14,6 +11,15 @@ const {
 
 // 导入检测登录中间件
 const checkLoginMiddleware = require('../../middlewares/checkLoginMiddleware')
+
+var express = require("express");
+var router = express.Router();
+
+// 首页路由规则
+router.get('/', (req, res) => {
+  // 重定向至accountList
+  res.redirect("/accountList");
+})
 
 // 账单列表
 router.get('/accountList', checkLoginMiddleware, async function(req, res, next) {
