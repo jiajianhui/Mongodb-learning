@@ -12,8 +12,11 @@ const {
   deleteAcount,
 } = require("../../accountServer");
 
+// 导入检测登录中间件
+const checkLoginMiddleware = require('../../middlewares/checkLoginMiddleware')
+
 // 账单列表
-router.get('/accountList', async function(req, res, next) {
+router.get('/accountList', checkLoginMiddleware, async function(req, res, next) {
 
   try {
     const accounts = await findAllaccounts();
@@ -28,7 +31,7 @@ router.get('/accountList', async function(req, res, next) {
 });
 
 // 添加账单
-router.get("/accountList/creatAccount", function (req, res, next) {
+router.get("/accountList/creatAccount", checkLoginMiddleware, function (req, res, next) {
   res.render("creat");
 });
 
@@ -37,7 +40,7 @@ router.get("/accountList/creatAccount", function (req, res, next) {
 
 
 // 新增账单
-router.post("/accountList", async function (req, res, next) {
+router.post("/accountList", checkLoginMiddleware, async function (req, res, next) {
   try {
     // 准备数据
     const newAccount = {
