@@ -57,8 +57,8 @@ router.post("/login", async (req, res) => {
      }
 });
 
-// 退出登录
-router.get("/logout", (req, res) => {
+// 退出登录；使用post请求，防止CSRF跨站请求
+router.post("/logout", (req, res) => {
     // 销毁session
     req.session.destroy(() => {
         res.render('success', {msg: '退出成功', url: '/login'})
