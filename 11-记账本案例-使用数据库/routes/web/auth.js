@@ -43,7 +43,11 @@ router.post("/login", async (req, res) => {
         console.log(data);
         // 3、判断
         if (data) {
-            res.render('success', {msg: '登录成功', url : '/accountList'})
+          // 4、服务端写入session信息
+          req.session.username = data.username; // data是从数据库中拿到的数据
+          req.session._id = data._id;
+
+          res.render("success", { msg: "登录成功", url: "/accountList" });
         } else {
             res.send('账号密码错误～')
         }
