@@ -15,6 +15,7 @@ const { DBHOST, DBPORT, DBNAME } = require("./config");
 var indexRouter = require('./routes/web/index');
 var authRouter = require("./routes/web/auth");
 const accountRouter = require('./routes/api/account')
+const authApiRouter = require("./routes/api/auth");
 
 var app = express();
 
@@ -52,6 +53,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use("/", authRouter);
 app.use("/api", accountRouter);
+app.use("/api", authApiRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
