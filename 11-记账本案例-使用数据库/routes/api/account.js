@@ -22,6 +22,9 @@ let checkTokenMiddleware = require('../../middlewares/checkTokenMiddleware')
 
 // 账单列表
 router.get("/accountList", checkTokenMiddleware, async function (req, res, next) {
+  // 获取当前用户信息
+  console.log(req.user);
+  
   try {
     const accounts = await findAllaccounts();
 

@@ -1,5 +1,7 @@
 // 导入jwt
 const jwt = require("jsonwebtoken");
+const { secret } = require("../config");
+
 module.exports = (req, res, next) => {
   // 1、获取token
   let token = req.get("token");
@@ -13,7 +15,7 @@ module.exports = (req, res, next) => {
   }
 
   // 3、校验token
-  jwt.verify(token, "jianhui", async (err, data) => {
+  jwt.verify(token, secret, async (err, data) => {
     if (err) {
       return res.json({
         code: "2004",
@@ -21,6 +23,9 @@ module.exports = (req, res, next) => {
         data: null,
       });
     }
+
+    // 保存用户信息；之后在路由回调中使用user中的数据进行数据库查询等操作
+    req.user = data
   });
 
   // 4、校验成功

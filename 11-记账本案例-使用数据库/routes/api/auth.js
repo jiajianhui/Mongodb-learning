@@ -8,6 +8,7 @@ const userModel = require('../../userModel')
 const md5 = require('md5')
 // 导入jwt
 const jwt = require('jsonwebtoken')
+const { secret } = require("../../config");
 
 // 登录操作
 router.post("/login", async (req, res) => {
@@ -21,12 +22,16 @@ router.post("/login", async (req, res) => {
         // 3、判断
         if (data) {
             // 4、为当前用户创建token
-            let token = jwt.sign({
+            let token = jwt.sign(
+              {
                 username: data.username,
-                _id: data._id
-            }, 'jianhui', {
-                expiresIn: 60
-            })
+                _id: data._id,
+              },
+              secret,
+              {
+                expiresIn: 60 * 60 * 24 * 7,
+              }
+            );
             // 5、响应token
             res.json({
                 code: '0000',
