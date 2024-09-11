@@ -14,32 +14,40 @@ const {
   updateAccount,
 } = require("../../accountServer");
 
+// 导入jwt
+const jwt = require('jsonwebtoken')
+
+// 导入token中间件
+let checkTokenMiddleware = require('../../middlewares/checkTokenMiddleware')
+
 // 账单列表
-router.get("/accountList", async function (req, res, next) {
+router.get("/accountList", checkTokenMiddleware, async function (req, res, next) {
   try {
     const accounts = await findAllaccounts();
-    
+
     // 响应成功
-    res.json({
-        //响应编号
-        code: '0000',
-        //响应信息
-        msg: '读取成功',
-        //响应数据
-        data: accounts
-    })
+    return res.json({
+      //响应编号
+      code: "0000",
+      //响应信息
+      msg: "读取成功",
+      //响应数据
+      data: accounts,
+    });
   } catch (error) {
-    res.json({
-        code: '1001',
-        msg: '读取失败',
-        data: null
-    })
+    res.status(500).json({
+      code: "1001",
+      msg: "读取失败",
+      data: null,
+    });
   }
+
+  
 });
 
 
 // 新增账单
-router.post("/accountList", async function (req, res, next) {
+router.post("/accountList", checkTokenMiddleware, async function (req, res, next) {
   try {
     // 准备数据
     const newAccount = {
@@ -65,7 +73,7 @@ router.post("/accountList", async function (req, res, next) {
 });
 
 // 删除账单
-router.delete("/accountList/:id", async function (req, res, next) {
+router.delete("/accountList/:id", checkTokenMiddleware, async function (req, res, next) {
   try {
     // 获取id
     let id = req.params.id;
@@ -87,7 +95,7 @@ router.delete("/accountList/:id", async function (req, res, next) {
 });
 
 // 获取单条账单
-router.get("/accountList/:id", async function (req, res, next) {
+router.get("/accountList/:id", checkTokenMiddleware, async function (req, res, next) {
   try {
     // 获取id
     let id = req.params.id;
@@ -109,7 +117,7 @@ router.get("/accountList/:id", async function (req, res, next) {
 });
 
 // 更新单条账单
-router.patch("/accountList/:id", async function (req, res, next) {
+router.patch("/accountList/:id", checkTokenMiddleware, async function (req, res, next) {
   try {
     // 获取id
     let id = req.params.id;
